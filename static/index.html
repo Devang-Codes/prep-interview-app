@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prep - AI-Powered Technical Interview Marketplace</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    
+    <!-- Background glow elements for rich aesthetic -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <!-- MAIN NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="logo" id="logo-btn">
+                <div class="logo-icon"><i data-lucide="brain-circuit"></i></div>
+                <span>Prep</span>
+            </a>
+            
+            <div class="nav-links" id="nav-links">
+                <a href="#" class="nav-link active" id="nav-browse" data-target="section-marketplace"><i data-lucide="search"></i> Find Experts</a>
+                <a href="#" class="nav-link" id="nav-dashboard" data-target="section-dashboard"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+                <a href="#" class="nav-link" id="nav-transactions" data-target="section-transactions"><i data-lucide="wallet"></i> Ledger</a>
+            </div>
+
+            <div class="nav-user-panel" id="nav-user-panel">
+                <!-- Logged in state -->
+                <div class="user-profile-badge hidden" id="user-badge">
+                    <div class="wallet-badge" id="wallet-display">
+                        <i data-lucide="gem" class="credit-icon"></i>
+                        <span id="credit-count">0</span> cr
+                    </div>
+                    <div class="user-avatar" id="navbar-avatar">U</div>
+                    <span class="user-name" id="navbar-username">User</span>
+                    <button class="logout-btn" id="logout-btn" title="Sign Out"><i data-lucide="log-out"></i></button>
+                </div>
+                
+                <!-- Logged out state -->
+                <button class="btn btn-primary" id="open-auth-btn"><i data-lucide="user"></i> Sign In</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <main class="main-content">
+
+        <!-- LANDING HERO PAGE -->
+        <section id="section-landing" class="view-section active">
+            <div class="hero-container">
+                <div class="hero-badge"><i data-lucide="sparkles"></i> The AI-Powered 1:1 Interview Platform</div>
+                <h1 class="hero-title">Bridge the Gap to Your <span class="gradient-text">Next Role</span></h1>
+                <p class="hero-subtitle">Book mock sessions with industry leaders. Practice under real pressure with live AI question generators, and receive detailed structural feedback reports.</p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-lg" id="explore-marketplace-btn">Browse Interviewers <i data-lucide="arrow-right"></i></button>
+                    <button class="btn btn-secondary btn-lg" id="learn-more-btn">How it Works</button>
+                </div>
+                
+                <!-- Feature Cards -->
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="users"></i></div>
+                        <h3>Verified Experts</h3>
+                        <p>Engage with principal architects and engineers from Netflix, Google, AWS, and Stripe.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="bot"></i></div>
+                        <h3>Real-time AI Copilot</h3>
+                        <p>Dynamic question generator tailors queries based on target roles, resumes, and specialties.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i data-lucide="bar-chart-3"></i></div>
+                        <h3>Granular Appraisals</h3>
+                        <p>Receive comprehensive structural reports examining your technical depth, pacing, and behavioral storytelling.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MARKETPLACE / BROWSE INTERVIEWERS -->
+        <section id="section-marketplace" class="view-section">
+            <div class="section-header">
+                <h2>Browse Expert Interviewers</h2>
+                <p>Select an interviewer matching your desired stack to book a focused mock session.</p>
+            </div>
+
+            <!-- Filters & Search -->
+            <div class="marketplace-filters">
+                <div class="search-box">
+                    <i data-lucide="search"></i>
+                    <input type="text" id="search-input" placeholder="Search by name, skills, or experience...">
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">All Specialties</button>
+                    <button class="filter-tab" data-filter="Frontend">Frontend</button>
+                    <button class="filter-tab" data-filter="Backend">Backend</button>
+                    <button class="filter-tab" data-filter="System Design">System Design</button>
+                    <button class="filter-tab" data-filter="PM">Product Management</button>
+                    <button class="filter-tab" data-filter="Behavior">Behavioral</button>
+                </div>
+            </div>
+
+            <!-- Interviewer Grid -->
+            <div class="interviewers-grid" id="interviewers-list">
+                <!-- Dynamically loaded -->
+            </div>
+        </section>
+
+        <!-- DASHBOARD SECTION -->
+        <section id="section-dashboard" class="view-section">
+            <!-- Dynamically toggle between Interviewee and Interviewer Dashboard layout -->
+            <div id="interviewee-dashboard" class="dashboard-layout hidden">
+                <div class="section-header">
+                    <h2>Candidate Dashboard</h2>
+                    <p>Track your credit balance, booked interviews, and view AI feedback reports.</p>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <!-- Left Column: Quick Stats & Wallet -->
+                    <div class="dashboard-sidebar">
+                        <div class="glass-card wallet-card">
+                            <h3>Wallet Balance</h3>
+                            <div class="large-balance"><span id="dash-wallet-bal">0</span> <span class="currency">credits</span></div>
+                            <p class="balance-subtext">Use credits to schedule 1:1 sessions with domain experts.</p>
+                            
+                            <div class="topup-panel">
+                                <h4>Simulate Top Up</h4>
+                                <div class="topup-actions">
+                                    <button class="btn btn-secondary btn-sm topup-quick-btn" data-amount="100">+100 cr</button>
+                                    <button class="btn btn-secondary btn-sm topup-quick-btn" data-amount="250">+250 cr</button>
+                                    <button class="btn btn-primary btn-sm" id="topup-submit-btn"><i data-lucide="plus-circle"></i> Add Credits</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Interviews & Appointments -->
+                    <div class="dashboard-main">
+                        <div class="glass-card appointments-card">
+                            <div class="card-header">
+                                <h3>Scheduled Sessions</h3>
+                                <span class="badge" id="upcoming-appt-count">0 Sessions</span>
+                            </div>
+                            <div class="table-container">
+                                <table class="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Interviewer</th>
+                                            <th>Specialty</th>
+                                            <th>Date & Time</th>
+                                            <th>Cost</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="interviewee-appointments-list">
+                                        <!-- Dynamically loaded -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interviewer Dashboard View -->
+            <div id="interviewer-dashboard" class="dashboard-layout hidden">
+                <div class="section-header">
+                    <h2>Interviewer Hub</h2>
+                    <p>Configure weekly availability slots, review candidate bookings, and cash out earnings.</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Left: Profile & Wallet -->
+                    <div class="dashboard-sidebar">
+                        <div class="glass-card wallet-card">
+                            <h3>Total Earnings</h3>
+                            <div class="large-balance"><span id="interviewer-earnings-bal">0</span> <span class="currency">credits</span></div>
+                            <p class="balance-subtext">Withdraw earnings directly to PayPal, bank, or UPI.</p>
+                            
+                            <div class="withdrawal-panel">
+                                <h4>Request Payout</h4>
+                                <div class="form-group">
+                                    <label for="withdraw-amount">Amount (credits)</label>
+                                    <input type="number" id="withdraw-amount" min="1" placeholder="Enter credits count">
+                                </div>
+                                <div class="form-group">
+                                    <label for="withdraw-method">Payout Method</label>
+                                    <select id="withdraw-method">
+                                        <option value="PayPal">PayPal Account</option>
+                                        <option value="Bank Transfer">Direct Bank Deposit</option>
+                                        <option value="UPI">UPI ID</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="withdraw-details">Method Details</label>
+                                    <input type="text" id="withdraw-details" placeholder="e.g. paypal@email.com or UPI ID">
+                                </div>
+                                <button class="btn btn-primary btn-block" id="withdraw-submit-btn"><i data-lucide="arrow-up-right"></i> Process Payout</button>
+                            </div>
+                        </div>
+
+                        <!-- Weekly Availability Configuration -->
+                        <div class="glass-card availability-card margin-top">
+                            <h3>Configure Availability</h3>
+                            <p class="card-desc">Set standard hours candidates can book. Existing bookings are unaffected.</p>
+                            <form id="availability-form" class="availability-form">
+                                <div class="form-group">
+                                    <label for="avail-day">Select Day</label>
+                                    <select id="avail-day">
+                                        <option value="0">Monday</option>
+                                        <option value="1">Tuesday</option>
+                                        <option value="2">Wednesday</option>
+                                        <option value="3">Thursday</option>
+                                        <option value="4">Friday</option>
+                                        <option value="5">Saturday</option>
+                                        <option value="6">Sunday</option>
+                                    </select>
+                                </div>
+                                <div class="time-range-group">
+                                    <div class="form-group">
+                                        <label for="avail-start">Start Time</label>
+                                        <input type="time" id="avail-start" value="10:00">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="avail-end">End Time</label>
+                                        <input type="time" id="avail-end" value="12:00">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-secondary btn-block"><i data-lucide="plus"></i> Add Slot</button>
+                            </form>
+                            
+                            <hr class="card-divider">
+                            
+                            <h4>Active Availability Slots</h4>
+                            <div class="availability-slots-list" id="active-slots-container">
+                                <!-- Dynamically loaded -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Booked Sessions -->
+                    <div class="dashboard-main">
+                        <div class="glass-card appointments-card">
+                            <div class="card-header">
+                                <h3>Scheduled Sessions</h3>
+                                <span class="badge" id="interviewer-appt-count">0 Bookings</span>
+                            </div>
+                            <div class="table-container">
+                                <table class="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Candidate</th>
+                                            <th>Scheduled Date</th>
+                                            <th>Duration</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="interviewer-appointments-list">
+                                        <!-- Dynamically loaded -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRANSACTIONS / AUDIT LEDGER -->
+        <section id="section-transactions" class="view-section">
+            <div class="section-header">
+                <h2>Financial Ledger</h2>
+                <p>Verify deposit audits, bookings, earnings, and withdrawal operations.</p>
+            </div>
+            
+            <div class="glass-card ledger-card">
+                <div class="table-container">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Date & Time</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ledger-transactions-list">
+                            <!-- Dynamically loaded -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIDEO CALL ROOM SECTION -->
+        <section id="section-room" class="view-section">
+            <div class="room-container">
+                
+                <!-- Left: Double Webcam split & Status -->
+                <div class="room-video-panel">
+                    <div class="room-header">
+                        <div class="room-title">
+                            <span class="status-indicator live"></span>
+                            <span id="room-partner-name">Session Partner</span>
+                        </div>
+                        <div class="room-timer" id="room-timer-display">00:00</div>
+                    </div>
+
+                    <!-- Dual Webcam Feeds -->
+                    <div class="webcams-grid">
+                        <!-- Interviewer Feed -->
+                        <div class="webcam-feed-container">
+                            <div class="feed-label">Interviewer (Host)</div>
+                            <div class="feed-canvas-wrapper">
+                                <canvas id="interviewer-canvas" class="webcam-canvas"></canvas>
+                                <div class="webcam-overlay" id="interviewer-video-overlay">
+                                    <div class="user-avatar avatar-lg" id="interviewer-room-avatar">I</div>
+                                    <div class="mic-wave" id="interviewer-mic-wave">
+                                        <span></span><span></span><span></span><span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Candidate Feed -->
+                        <div class="webcam-feed-container">
+                            <div class="feed-label">Candidate (You)</div>
+                            <div class="feed-canvas-wrapper">
+                                <canvas id="candidate-canvas" class="webcam-canvas"></canvas>
+                                <div class="webcam-overlay" id="candidate-video-overlay">
+                                    <div class="user-avatar avatar-lg" id="candidate-room-avatar">C</div>
+                                    <div class="mic-wave" id="candidate-mic-wave">
+                                        <span></span><span></span><span></span><span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Call Control Controls Bar -->
+                    <div class="room-controls-bar">
+                        <button class="control-btn" id="ctrl-mic" title="Mute Mic"><i data-lucide="mic"></i></button>
+                        <button class="control-btn" id="ctrl-video" title="Stop Camera"><i data-lucide="video"></i></button>
+                        <button class="control-btn btn-danger" id="ctrl-end-call" title="End Interview"><i data-lucide="phone-off"></i> End Call</button>
+                    </div>
+                </div>
+
+                <!-- Right Side: Interactive Notepad & Live AI helper -->
+                <div class="room-interactive-panel">
+                    <div class="interactive-tabs">
+                        <button class="interactive-tab active" data-room-tab="tab-notepad"><i data-lucide="file-code"></i> Coding Editor</button>
+                        <button class="interactive-tab" data-room-tab="tab-chat"><i data-lucide="message-square"></i> Chat Feed</button>
+                        <button class="interactive-tab" data-room-tab="tab-ai-helper" id="room-tab-ai-helper-btn"><i data-lucide="bot"></i> AI Helper Panel</button>
+                    </div>
+
+                    <div class="interactive-tab-content">
+                        <!-- Notepad / Code Editor -->
+                        <div id="tab-notepad" class="room-tab-pane active">
+                            <div class="code-editor-header">
+                                <select class="code-lang-select" id="code-lang-selector">
+                                    <option value="python">Python</option>
+                                    <option value="javascript">JavaScript</option>
+                                    <option value="sql">SQL</option>
+                                    <option value="markdown">System Architecture Notes</option>
+                                </select>
+                            </div>
+                            <textarea class="code-textarea" id="room-notepad-textarea" placeholder="Write clean structural code, database designs, or microservices diagrams here..."></textarea>
+                        </div>
+
+                        <!-- Chat Feed -->
+                        <div id="tab-chat" class="room-tab-pane">
+                            <div class="chat-messages-container" id="room-chat-messages">
+                                <!-- Loaded dynamically -->
+                            </div>
+                            <form id="room-chat-form" class="room-chat-input-form">
+                                <input type="text" id="room-chat-input" placeholder="Type a message or answer a question...">
+                                <button type="submit" class="btn btn-primary btn-icon"><i data-lucide="send"></i></button>
+                            </form>
+                        </div>
+
+                        <!-- AI Helper Panel -->
+                        <div id="tab-ai-helper" class="room-tab-pane">
+                            <div class="ai-helper-container">
+                                <div class="ai-panel-header">
+                                    <div class="ai-title"><i data-lucide="sparkles"></i> AI Technical Helper</div>
+                                    <button class="btn btn-secondary btn-sm" id="ai-generate-questions-btn"><i data-lucide="refresh-cw"></i> Refresh Questions</button>
+                                </div>
+                                <p class="ai-helper-description">Dynamic topic questions generated by analyzing the target role & specialties:</p>
+                                
+                                <div class="ai-questions-list" id="ai-room-questions-container">
+                                    <!-- Dynamic Questions go here -->
+                                </div>
+
+                                <div class="ai-panel-info">
+                                    <p><i data-lucide="info"></i> <strong>Simulation Active:</strong> Type answers in the Chat or write algorithms in the Editor. The final evaluation is synthesized by analyzing your code and conversations.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- INTERVIEWER BOOKING MODAL -->
+    <div class="modal-overlay" id="booking-modal">
+        <div class="modal-card glass-card">
+            <button class="modal-close" id="booking-modal-close"><i data-lucide="x"></i></button>
+            <div class="modal-header">
+                <h3 id="booking-modal-title">Book Session</h3>
+                <span class="hourly-rate-tag" id="booking-modal-rate">0 cr / hr</span>
+            </div>
+            
+            <div class="modal-body">
+                <div class="interviewer-mini-profile">
+                    <div class="user-avatar avatar-md" id="booking-modal-avatar">I</div>
+                    <div>
+                        <h4 id="booking-modal-name">Interviewer Name</h4>
+                        <p class="specialties-text" id="booking-modal-specialties">Specialties list</p>
+                    </div>
+                </div>
+
+                <div class="booking-calendar-section">
+                    <h4>Select Available Slot</h4>
+                    <p class="card-desc">Choose a date and time slot below (preconfigured hours):</p>
+                    <div class="booking-slots-grid" id="booking-slots-container">
+                        <!-- slots render here -->
+                    </div>
+                </div>
+
+                <div class="booking-invoice glass-card">
+                    <div class="invoice-row">
+                        <span>Hourly Session Charge:</span>
+                        <span id="booking-invoice-rate">0 credits</span>
+                    </div>
+                    <div class="invoice-row">
+                        <span>Platform Fee:</span>
+                        <span class="success-text">FREE</span>
+                    </div>
+                    <hr class="card-divider">
+                    <div class="invoice-row invoice-total">
+                        <span>Total Checkout:</span>
+                        <span id="booking-invoice-total">0 credits</span>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" id="booking-cancel-btn">Cancel</button>
+                    <button class="btn btn-primary" id="booking-confirm-btn"><i data-lucide="credit-card"></i> Pay and Confirm Booking</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI FEEDBACK REPORT OVERLAY -->
+    <div class="modal-overlay" id="feedback-modal">
+        <div class="modal-card modal-card-lg glass-card">
+            <button class="modal-close" id="feedback-modal-close"><i data-lucide="x"></i></button>
+            
+            <div class="feedback-report-header">
+                <div class="badge"><i data-lucide="sparkles"></i> AI Performance Appraisals</div>
+                <h2>Interview Feedback Report</h2>
+                <p id="feedback-modal-subtitle">Session analysis for Frontend Software Engineer role.</p>
+            </div>
+
+            <div class="feedback-report-body">
+                <!-- Large radial/score section -->
+                <div class="feedback-score-section">
+                    <div class="feedback-radial-score">
+                        <svg viewBox="0 0 36 36" class="circular-chart">
+                            <path class="circle-bg"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                            />
+                            <path class="circle" id="feedback-radial-path"
+                                stroke-dasharray="0, 100"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                            />
+                        </svg>
+                        <div class="radial-text">
+                            <span class="radial-number" id="feedback-overall-score">0</span>
+                            <span class="radial-label">Overall Match</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-meters-grid">
+                        <div class="metric-meter-item">
+                            <div class="metric-labels">
+                                <span>Technical Depth</span>
+                                <span id="feedback-tech-score">0%</span>
+                            </div>
+                            <div class="meter-track">
+                                <div class="meter-fill" id="feedback-tech-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="metric-meter-item">
+                            <div class="metric-labels">
+                                <span>Communication & STAR Method</span>
+                                <span id="feedback-comm-score">0%</span>
+                            </div>
+                            <div class="meter-track">
+                                <div class="meter-fill" id="feedback-comm-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strengths & Improvements tabs -->
+                <div class="feedback-cards-grid">
+                    <div class="feedback-card-pane">
+                        <div class="pane-header"><i data-lucide="check-circle-2" class="success-text"></i> Technical Assessment</div>
+                        <div class="pane-content" id="feedback-tech-pane">
+                            <!-- Bullet points -->
+                        </div>
+                    </div>
+
+                    <div class="feedback-card-pane">
+                        <div class="pane-header"><i data-lucide="mic" class="secondary-text"></i> Communication & Storytelling</div>
+                        <div class="pane-content" id="feedback-comm-pane">
+                            <!-- Bullet points -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card recommendations-card margin-top">
+                    <h3>Actionable Roadmap Recommendations</h3>
+                    <p id="feedback-recommendations-text">Specific, personalized items go here...</p>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="feedback-close-btn">Close Report</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTHENTICATION FORM MODAL -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="modal-card modal-card-sm glass-card">
+            <button class="modal-close" id="auth-modal-close"><i data-lucide="x"></i></button>
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="auth-tab-login">Login</button>
+                <button class="auth-tab" id="auth-tab-register">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form-pane active">
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" required placeholder="e.g. devan@prep.com">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                
+                <p class="auth-hint">Demo Accounts:<br>
+                Candidate: <code>devan@prep.com</code> / <code>password</code><br>
+                Interviewer: <code>marcus@prep.com</code> / <code>password</code></p>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="auth-form-pane">
+                <div class="form-group">
+                    <label for="reg-name">Full Name</label>
+                    <input type="text" id="reg-name" required placeholder="e.g. Jane Doe">
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">Email Address</label>
+                    <input type="email" id="reg-email" required placeholder="e.g. jane@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" required placeholder="••••••••">
+                </div>
+                <div class="form-group">
+                    <label for="reg-role">Role Type</label>
+                    <select id="reg-role">
+                        <option value="interviewee">Candidate (100 free credits!)</option>
+                        <option value="interviewer">Interviewer</option>
+                    </select>
+                </div>
+                <div class="form-group hidden" id="reg-interviewer-fields">
+                    <label for="reg-specialties">Specialties (comma-separated)</label>
+                    <input type="text" id="reg-specialties" placeholder="e.g. Frontend, React, Redux">
+                    <label for="reg-rate" class="margin-top-sm">Hourly Rate (credits/hr)</label>
+                    <input type="number" id="reg-rate" min="10" max="500" value="50">
+                    <label for="reg-bio" class="margin-top-sm">Professional Biography</label>
+                    <textarea id="reg-bio" rows="2" placeholder="Tell candidates about your industry background..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden">
+        <i id="toast-icon" data-lucide="info"></i>
+        <span id="toast-message">Message toast</span>
+    </div>
+
+    <!-- Main Client-Side JS -->
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/room.js"></script>
+    <script src="/static/js/dashboard.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
